@@ -1,0 +1,96 @@
+#creating a Quiz game containing Multiple Choice Questions 
+
+
+#creating a dictionary to score the questions and answers.
+#keys will be the questions.
+#values will be the answer options.
+
+questions={
+    'Who created Python? ':'A',
+    'Python in Computer Science is a':'B'
+    }
+
+#options are stored in a list of lists 
+#each inner list contains values of the keys, and one among each of them is correct.
+
+options= [
+     ['A.Guido van Rossum','B.Edison','C.Tony Stark','D.Albert Einstein'],
+ ['A.snake','B.programming language','C.Markup language','D.None of these']]
+
+
+#defining the functions needed to execute the game
+
+def new_game():
+    guess_list=[] #holds the guesses made by the user 
+    correct_guesses=0 #counter for correct guesses
+    ques_no=1 #counter for number of questions asked
+
+    for key in questions:
+        print('\n'+key+'\n') #asks question one at a time
+        for i in options[ques_no-1]:
+            print(i) #prints options for the question asked
+        while(True):
+            guess=input('Enter A,B,C,or D:    ')
+            guess=guess.upper() #turns user input to uppercase
+            if guess in ('A','B','C','D'):
+                guess_list.append(guess) #checks if user input is valid
+                break
+            else:
+                print('Invalid input, Please Enter a Valid option.',end=' ')
+            
+
+        correct_guesses+=check_your_answer(questions.get(key),guess)
+        ques_no+=1 #increments the counter by 1, after every question is completed.
+
+    display_the_score(correct_guesses,guess_list)
+
+def check_your_answer(answer,guess):
+    if answer==guess:
+        print("\nAbsolutely CORRECT!\n")
+        return 1 #1 mark for every correct answer
+    else:
+        print("\nWrong answer\n")
+        return 0 #no mark awarded
+
+def display_the_score(correct_guesses,guess_list):
+    print("\nRESULTS\n") 
+    print("Answers:\n",end='  ')
+    for i in questions:
+        print(questions.get(i),end='  ') #displays the correct answers
+    
+    print('\nValid Guesses:\n',end='  ')
+    
+    for i in guess_list:
+        print(i,end='  ') #displays user guesses
+    #if len(guess_list)==0:
+        #print('Nil') #if no guess is made or if invalid input
+    score=int((correct_guesses/len(questions))*100) #finding percentage of score obtained
+    print("\nYou have scored " +str(score)+'%')
+    if score<30:
+        print('Better luck next time :(')
+    elif score<60:
+        print('Focus on the questions to score much more!')
+    elif score<80:
+        print('Good one!')
+    else:
+        print("That's Amazing!")
+def play_again():
+    while(True):
+        reply=input("Want to try once again? Say 'yes' or 'no':  ")
+        reply=reply.lower() #change user input to lower case
+        if reply in ('yes','no'):
+            break
+        else:
+            print("Invalid choice.")
+    if reply=='yes':
+        return True #such that new game starts
+    else:
+        return False #no new game starts
+
+#creating a new game
+new_game() #calling the function for execution
+
+while play_again():
+    new_game() #execute code, if the user wants to play again
+
+print("Goodbye! See you soon!!")
